@@ -246,7 +246,7 @@ void PCB_EDIT_FRAME::OnExportVRML( wxCommandEvent& event )
         modelPath.Mkdir();
     }
 
-    if( !ExportVRML_File( last_vrmlName, scale, export3DFiles, useRelativePaths,
+    if( !ExportVRML_File( GetBoard(), Prj().Get3DCacheManager(), last_vrmlName, scale, export3DFiles, useRelativePaths,
                           usePlainPCB, modelPath.GetPath(), aXRef, aYRef ) )
     {
         wxString msg;

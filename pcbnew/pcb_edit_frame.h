@@ -27,6 +27,7 @@
 #include <unordered_map>
 #include <map>
 #include "pcb_base_edit_frame.h"
+#include "3d_cache/3d_cache.h"
 #include "config_params.h"
 #include "undo_redo_container.h"
 #include "zones.h"
@@ -1055,7 +1056,7 @@ public:
      * @param aYRef = Y value of PCB (0,0) reference point
      * @return true if Ok.
      */
-    bool ExportVRML_File( const wxString & aFullFileName, double aMMtoWRMLunit,
+    static bool ExportVRML_File( BOARD *pcb, S3D_CACHE* aCache, const wxString & aFullFileName, double aMMtoWRMLunit,
                           bool aExport3DFiles, bool aUseRelativePaths,
                           bool aUsePlainPCB, const wxString & a3D_Subdir,
                           double aXRef, double aYRef );

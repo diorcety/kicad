@@ -301,7 +301,7 @@ if( CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang" )
     endif()
 
     if( MINGW )
-        set( CMAKE_EXE_LINKER_FLAGS_RELEASE "-s" )
+	    #set( CMAKE_EXE_LINKER_FLAGS_RELEASE "-s" )
 
         # Since version 2.8.5, Cmake uses a response file (.rsp) to
         # pass the list of include paths to gcc
@@ -769,6 +769,9 @@ set( wxWidgets_CONFIG_OPTIONS ${wxWidgets_CONFIG_OPTIONS} --static=no )
 
 find_package( wxWidgets ${wxWidgets_REQ_VERSION} COMPONENTS gl aui adv html core net base xml stc REQUIRED )
 
+string(REPLACE "-Wl,--subsystem,windows" "" wxWidgets_LIBRARIES "${wxWidgets_LIBRARIES}")
+string(REPLACE "-mwindows" "" wxWidgets_LIBRARIES "${wxWidgets_LIBRARIES}")
+
 # Include wxWidgets macros.
 include( ${wxWidgets_USE_FILE} )
 
@@ -971,6 +974,7 @@ add_subdirectory( polygon )
 add_subdirectory( pagelayout_editor )
 add_subdirectory( potrace )
 add_subdirectory( bitmap2component )
+add_subdirectory( kicad2vrml )
 add_subdirectory( pcb_calculator )
 add_subdirectory( plugins )             # 3D plugins must be built before kicad
 add_subdirectory( kicad )               # should follow pcbnew, eeschema

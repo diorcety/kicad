@@ -69,7 +69,6 @@ static double WORLD_SCALE = 1.0;    // scaling from 0.1 in to desired VRML unit
 static double BOARD_SCALE;          // scaling from mm to desired VRML world scale
 static const int PRECISION = 6;     // legacy precision factor (now set to 6)
 static wxString SUBDIR_3D;          // legacy 3D subdirectory
-static wxString PROJ_DIR;           // project directory
 
 struct VRML_COLOR
 {
@@ -1544,20 +1543,18 @@ static void export_vrml_module( MODEL_VRML& aModel, BOARD* aPcb,
 }
 
 
-bool PCB_EDIT_FRAME::ExportVRML_File( const wxString& aFullFileName, double aMMtoWRMLunit,
+bool PCB_EDIT_FRAME::ExportVRML_File( BOARD *pcb, S3D_CACHE* aCache, const wxString& aFullFileName, double aMMtoWRMLunit,
                                       bool aExport3DFiles, bool aUseRelativePaths,
                                       bool aUsePlainPCB, const wxString& a3D_Subdir,
                                       double aXRef, double aYRef )
 {
-    BOARD*          pcb = GetBoard();
     bool            ok  = true;
 
     USE_INLINES = aExport3DFiles;
     USE_DEFS = true;
     USE_RELPATH = aUseRelativePaths;
 
-    cache = Prj().Get3DCacheManager();
-    PROJ_DIR = Prj().GetProjectPath();
+    cache = aCache;
     SUBDIR_3D = a3D_Subdir;
     MODEL_VRML model3d;
     model_vrml = &model3d;
