@@ -45,6 +45,7 @@
 #include "pgm_base.h"
 #include "plugins/3dapi/ifsg_all.h"
 #include "streamwrapper.h"
+#include "export_vrml.h"
 #include "vrml_layer.h"
 #include "pcb_edit_frame.h"
 #include "../../kicad/kicad.h"
@@ -69,7 +70,6 @@ static double WORLD_SCALE = 1.0;    // scaling from 0.1 in to desired VRML unit
 static double BOARD_SCALE;          // scaling from mm to desired VRML world scale
 static const int PRECISION = 6;     // legacy precision factor (now set to 6)
 static wxString SUBDIR_3D;          // legacy 3D subdirectory
-static wxString PROJ_DIR;           // project directory
 
 struct VRML_COLOR
 {
@@ -1544,20 +1544,18 @@ static void export_vrml_module( MODEL_VRML& aModel, BOARD* aPcb,
 }
 
 
-bool PCB_EDIT_FRAME::ExportVRML_File( const wxString& aFullFileName, double aMMtoWRMLunit,
+bool VRML_WRITER::ExportVRML_File( PROJECT& aProject, BOARD* aPcb, const wxString& aFullFileName, double aMMtoWRMLunit,
                                       bool aExport3DFiles, bool aUseRelativePaths,
                                       bool aUsePlainPCB, const wxString& a3D_Subdir,
                                       double aXRef, double aYRef )
 {
-    BOARD*          pcb = GetBoard();
     bool            ok  = true;
 
     USE_INLINES = aExport3DFiles;
     USE_DEFS = true;
     USE_RELPATH = aUseRelativePaths;
 
-    cache = Prj().Get3DCacheManager();
-    PROJ_DIR = Prj().GetProjectPath();
+    cache = aProject.Get3DCacheManager();
     SUBDIR_3D = a3D_Subdir;
     MODEL_VRML model3d;
     model_vrml = &model3d;
@@ -1581,21 +1579,21 @@ bool PCB_EDIT_FRAME::ExportVRML_File( const wxString& aFullFileName, double aMMt
     {
 
         // Preliminary computation: the z value for each layer
-        compute_layer_Zs(model3d, pcb);
+        compute_layer_Zs(model3d, aPcb);
 
         // board edges and cutouts
-        export_vrml_board(model3d, pcb);
+        export_vrml_board(model3d, aPcb);
 
         // Drawing and text on the board
         if( !aUsePlainPCB )
-            export_vrml_drawings( model3d, pcb );
+            export_vrml_drawings( model3d, aPcb );
 
         // Export vias and trackage
-        export_vrml_tracks( model3d, pcb );
+        export_vrml_tracks( model3d, aPcb );
 
         // Export zone fills
         if( !aUsePlainPCB )
-            export_vrml_zones( model3d, pcb);
+            export_vrml_zones( model3d, aPcb);
 
         if( USE_INLINES )
         {
@@ -1634,11 +1632,11 @@ bool PCB_EDIT_FRAME::ExportVRML_File( const wxString& aFullFileName, double aMMt
             output_file << "  children [\n";
 
             // Export footprints
-            for( MODULE* module = pcb->m_Modules; module != 0; module = module->Next() )
-                export_vrml_module( model3d, pcb, module, &output_file );
+            for( MODULE* module = aPcb->m_Modules; module != 0; module = module->Next() )
+                export_vrml_module( model3d, aPcb, module, &output_file );
 
             // write out the board and all layers
-            write_layers( model3d, pcb, TO_UTF8( aFullFileName ), &output_file );
+            write_layers( model3d, aPcb, TO_UTF8( aFullFileName ), &output_file );
 
             // Close the outer 'transform' node
             output_file << "]\n}\n";
@@ -1648,11 +1646,11 @@ bool PCB_EDIT_FRAME::ExportVRML_File( const wxString& aFullFileName, double aMMt
         else
         {
             // Export footprints
-            for( MODULE* module = pcb->m_Modules; module != 0; module = module->Next() )
-                export_vrml_module( model3d, pcb, module, NULL );
+            for( MODULE* module = aPcb->m_Modules; module != 0; module = module->Next() )
+                export_vrml_module( model3d, aPcb, module, NULL );
 
             // write out the board and all layers
-            write_layers( model3d, pcb, TO_UTF8( aFullFileName ), NULL );
+            write_layers( model3d, aPcb, TO_UTF8( aFullFileName ), NULL );
         }
     }
     catch( const std::exception& e )

@@ -971,6 +971,7 @@ add_subdirectory( polygon )
 add_subdirectory( pagelayout_editor )
 add_subdirectory( potrace )
 add_subdirectory( bitmap2component )
+add_subdirectory( kicad2vrml )
 add_subdirectory( pcb_calculator )
 add_subdirectory( plugins )             # 3D plugins must be built before kicad
 add_subdirectory( kicad )               # should follow pcbnew, eeschema

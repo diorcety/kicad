@@ -1027,58 +1027,10 @@ public:
     void OnExportVRML( wxCommandEvent& event );
 
     /**
-     * Function ExportVRML_File
-     * Creates the file(s) exporting current BOARD to a VRML file.
-     *
-     * @note When copying 3D shapes files, the new filename is build from the full path
-     *       name, changing the separators by underscore.  This is needed because files
-     *       with the same shortname can exist in different directories
-     * @note ExportVRML_File generates coordinates in board units (BIU) inside the file.
-     * @todo Use mm inside the file.  A general scale transform is applied to the whole
-     *       file (1.0 to have the actual WRML unit im mm, 0.001 to have the actual WRML
-     *       unit in meters.
-     * @note For 3D models built by a 3D modeler, the unit is 0,1 inches.  A specific scale
-     *       is applied to 3D models to convert them to internal units.
-     *
-     * @param aFullFileName = the full filename of the file to create
-     * @param aMMtoWRMLunit = the VRML scaling factor:
-     *      1.0 to export in mm. 0.001 for meters
-     * @param aExport3DFiles = true to copy 3D shapes in the subir a3D_Subdir
-     * @param aUseRelativePaths set to true to use relative paths instead of absolute paths
-     *                          in the board VRML file URLs.
-     * @param aUsePlainPCB set to true to export a board with no copper or silkskreen;
-     *                          this is useful for generating a VRML file which can be
-     *                          converted to a STEP model.
-     * @param a3D_Subdir = sub directory where 3D shapes files are copied.  This is only used
-     *                     when aExport3DFiles == true
-     * @param aXRef = X value of PCB (0,0) reference point
-     * @param aYRef = Y value of PCB (0,0) reference point
-     * @return true if Ok.
-     */
-    bool ExportVRML_File( const wxString & aFullFileName, double aMMtoWRMLunit,
-                          bool aExport3DFiles, bool aUseRelativePaths,
-                          bool aUsePlainPCB, const wxString & a3D_Subdir,
-                          double aXRef, double aYRef );
-
-    /**
      * Function OnExportIDF3
      * will export the current BOARD to a IDFv3 board and lib files.
      */
     void OnExportIDF3( wxCommandEvent& event );
-
-    /**
-     * Function Export_IDF3
-     * Creates an IDF3 compliant BOARD (*.emn) and LIBRARY (*.emp) file.
-     *
-     * @param aPcb = a pointer to the board to be exported to IDF
-     * @param aFullFileName = the full filename of the export file
-     * @param aUseThou = set to true if the desired IDF unit is thou (mil)
-     * @param aXRef = the board Reference Point in mm, X value
-     * @param aYRef = the board Reference Point in mm, Y value
-     * @return true if OK
-     */
-    bool Export_IDF3( BOARD* aPcb, const wxString& aFullFileName,
-                      bool aUseThou, double aXRef, double aYRef );
 
     /**
      * Function OnExportSTEP

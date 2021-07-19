@@ -27,7 +27,7 @@
 
 
 #include <list>
-#include <pcb_edit_frame.h>
+#include <export_idf.h>
 #include <macros.h>
 #include <pcbnew.h>
 #include <class_board.h>
@@ -550,7 +550,7 @@ static void idf_export_module( BOARD* aPcb, MODULE* aModule,
  * generates IDFv3 compliant board (*.emn) and library (*.emp)
  * files representing the user's PCB design.
  */
-bool PCB_EDIT_FRAME::Export_IDF3( BOARD* aPcb, const wxString& aFullFileName,
+bool IDF_WRITER::Export_IDF3( PROJECT& aProject, BOARD* aPcb, const wxString& aFullFileName,
     bool aUseThou, double aXRef, double aYRef )
 {
     IDF3_BOARD idfBoard( IDF3::CAD_ELEC );
@@ -558,7 +558,7 @@ bool PCB_EDIT_FRAME::Export_IDF3( BOARD* aPcb, const wxString& aFullFileName,
     // Switch the locale to standard C (needed to print floating point numbers)
     LOCALE_IO toggle;
 
-    resolver = Prj().Get3DCacheManager()->GetResolver();
+    resolver = aProject.Get3DCacheManager()->GetResolver();
 
     bool ok = true;
     double scale = MM_PER_IU;   // we must scale internal units to mm for IDF

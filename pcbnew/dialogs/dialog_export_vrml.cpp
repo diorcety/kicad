@@ -34,6 +34,7 @@
 
 #include <pcbnew.h>
 #include <class_board.h>
+#include "export_vrml.h"
 
 
 /* the dialog to create VRML files, derived from DIALOG_EXPORT_3DFILE_BASE,
@@ -246,7 +247,7 @@ void PCB_EDIT_FRAME::OnExportVRML( wxCommandEvent& event )
         modelPath.Mkdir();
     }
 
-    if( !ExportVRML_File( last_vrmlName, scale, export3DFiles, useRelativePaths,
+    if( !VRML_WRITER::ExportVRML_File( Prj(), GetBoard(), last_vrmlName, scale, export3DFiles, useRelativePaths,
                           usePlainPCB, modelPath.GetPath(), aXRef, aYRef ) )
     {
         wxString msg;

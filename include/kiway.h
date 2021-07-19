@@ -258,6 +258,7 @@ struct KIFACE
 class KIWAY : public wxEvtHandler
 {
     friend struct PGM_SINGLE_TOP;        // can use set_kiface()
+    friend struct PGM_KICAD2VRML_TOP;    // can use set_kiface()
 
 public:
     /// Known KIFACE implementations
@@ -270,6 +271,7 @@ public:
         FACE_PL_EDITOR,
         FACE_PCB_CALCULATOR,
         FACE_BMP2CMP,
+        FACE_KICAD2VRML,
 
         KIWAY_FACE_COUNT
     };

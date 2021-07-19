@@ -56,6 +56,8 @@ enum FRAME_T
 
     FRAME_BM2CMP,
 
+    FRAME_KICAD2VRML,
+
     FRAME_CALC,
 
     KIWAY_PLAYER_COUNT,         // counts subset of FRAME_T's which are KIWAY_PLAYER derivatives
